@@ -1,1 +1,467 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Tradition Proposals</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            padding: 20px;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .background-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -2;
+        }
+        
+        .gradient-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .orb-1 {
+            background: radial-gradient(circle, #00ffff, #0080ff);
+            top: -200px;
+            left: -200px;
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        .orb-2 {
+            background: radial-gradient(circle, #ff0080, #8000ff);
+            bottom: -200px;
+            right: -200px;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-50px) rotate(180deg); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #00ffff 0%, #0080ff 50%, #8000ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        
+        .location-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #00ffff;
+            letter-spacing: -0.01em;
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            color: #a0a0a0;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .proposals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 40px;
+            margin-top: 80px;
+        }
+        
+        .proposal-card {
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px 35px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .proposal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .proposal-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 255, 255, 0.3);
+            box-shadow: 
+                0 25px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(0, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .proposal-card:hover::before {
+            opacity: 1;
+        }
+        
+        .proposal-title {
+            font-size: 1.9rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+        
+        .event-details {
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .hosted-by {
+            font-size: 0.9rem;
+            color: #00ffff;
+            font-weight: 500;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .event-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .info-label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+        
+        .info-value {
+            font-size: 0.95rem;
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        
+        .doc-link {
+            display: flex;
+            align-items: center;
+            padding: 18px 24px;
+            background: rgba(25, 25, 25, 0.9);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 16px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .doc-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .doc-link:hover::before {
+            left: 100%;
+        }
+        
+        .doc-link:hover {
+            transform: translateX(8px);
+            border-color: rgba(0, 255, 255, 0.3);
+            background: rgba(0, 255, 255, 0.05);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .doc-link.budget:hover {
+            border-color: rgba(0, 255, 128, 0.3);
+            background: rgba(0, 255, 128, 0.05);
+        }
+        
+        .doc-link.flyer:hover {
+            border-color: rgba(255, 0, 128, 0.3);
+            background: rgba(255, 0, 128, 0.05);
+        }
+        
+        .icon {
+            margin-right: 16px;
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+        
+        .tech-accent {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 8px;
+            height: 8px;
+            background: #00ffff;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        .loading-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00ffff, #0080ff, #8000ff);
+            width: 0;
+            transition: width 0.4s ease;
+        }
+        
+        .proposal-card:hover .loading-bar {
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            .location-title {
+                font-size: 2rem;
+            }
+            
+            .proposals-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .proposal-card {
+                padding: 30px 25px;
+            }
+            
+            .doc-link {
+                padding: 16px 20px;
+            }
+            
+            .event-info {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .location-title {
+                font-size: 1.6rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-grid"></div>
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Community Tradition Proposals</h1>
+            <h2 class="location-title">Everglades Hall</h2>
+            <!-- <p class="subtitle">Advanced framework for building resilient community ecosystems through data-driven social architecture</p> -->
+        </header>
+        
+        <div class="proposals-grid">
+            <!-- Proposal 1: Annual Neighborhood Festival -->
+            <div class="proposal-card">
+                <div class="tech-accent"></div>
+                <h2 class="proposal-title">Annual Neighborhood Festival</h2>
+                
+                <div class="event-details">
+                    <div class="hosted-by">Hosted by RA Brian & RA Raiyan</div>
+                    <div class="event-info">
+                        <div class="info-item">
+                            <span class="info-label">Date</span>
+                            <span class="info-value">Sep 22, 2025</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Location</span>
+                            <span class="info-value">EVE MPR</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="links-container">
+                    <a href="https://docs.google.com/document/d/1Hkb6SBiO8UQ44RzjBNdcegW6mkyrC-UVhrT-rNYoETw/edit?usp=sharing" class="doc-link rclp">
+                        <span class="icon">⚡</span>
+                        Residential Community Lesson Plan (RCLP)
+                    </a>
+                    <a href="https://docs.google.com/document/d/1Hkb6SBiO8UQ44RzjBNdcegW6mkyrC-UVhrT-rNYoETw/edit?usp=sharing" class="doc-link budget">
+                        <span class="icon">⚙️</span>
+                        Budget Document - Link within RCLP
+                    </a>
+                    <a href="https://docs.google.com/document/d/1Hkb6SBiO8UQ44RzjBNdcegW6mkyrC-UVhrT-rNYoETw/edit?usp=sharing" class="doc-link flyer">
+                        <span class="icon">🚀</span>
+                        Promotional Flyer - Link within RCLP
+                    </a>
+                </div>
+                <div class="loading-bar"></div>
+            </div>
+            
+            <!-- Proposal 2: Community Garden Initiative -->
+            <div class="proposal-card">
+                <div class="tech-accent"></div>
+                <h2 class="proposal-title">TBD</h2>
+                
+                <div class="event-details">
+                    <div class="hosted-by">Hosted by </div>
+                    <div class="event-info">
+                        <div class="info-item">
+                            <span class="info-label">Date</span>
+                            <span class="info-value">Oct, 2025</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Location</span>
+                            <span class="info-value">TBD</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="links-container">
+                    <a href="#" class="doc-link rclp">
+                        <span class="icon">⚡</span>
+                        Residential Community Lesson Plan (RCLP)
+                    </a>
+                    <a href="#" class="doc-link budget">
+                        <span class="icon">⚙️</span>
+                        Budget Document
+                    </a>
+                    <a href="#" class="doc-link flyer">
+                        <span class="icon">🚀</span>
+                        Promotional Flyer
+                    </a>
+                </div>
+                <div class="loading-bar"></div>
+            </div>
+            
+            <!-- Proposal 3: Monthly Skills Exchange -->
+            <div class="proposal-card">
+                <div class="tech-accent"></div>
+                <h2 class="proposal-title">TBD</h2>
+                
+                <div class="event-details">
+                    <div class="hosted-by">Hosted by </div>
+                    <div class="event-info">
+                        <div class="info-item">
+                            <span class="info-label">Date</span>
+                            <span class="info-value">Nov, 2025</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Location</span>
+                            <span class="info-value">TBD</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="links-container">
+                    <a href="#" class="doc-link rclp">
+                        <span class="icon">⚡</span>
+                        Residential Community Lesson Plan (RCLP)
+                    </a>
+                    <a href="#" class="doc-link budget">
+                        <span class="icon">⚙️</span>
+                        Budget Document
+                    </a>
+                    <a href="#" class="doc-link flyer">
+                        <span class="icon">🚀</span>
+                        Promotional Flyer
+                    </a>
+                </div>
+                <div class="loading-bar"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
